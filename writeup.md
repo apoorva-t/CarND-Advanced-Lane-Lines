@@ -42,7 +42,6 @@ I start by preparing "object points", which will be the (x, y, z) coordinates of
 
 I then used the output `objpts` and `imgpts` to compute the camera calibration and distortion coefficients using the `cv2.calibrateCamera()` function.  I applied this distortion correction to the chessboard image using the `cv2.undistort()` function and obtained this result: 
 ![alt text][image1]
-
 ### Pipeline (single images)
 
 #### 1. Provide an example of a distortion-corrected image.
@@ -50,19 +49,16 @@ I then used the output `objpts` and `imgpts` to compute the camera calibration a
 Now that we have the distortion coefficients and camera matrix in 'dist' and 'mtx', we will use these in the pipeline for both test images and frames in the video to correct for distortion. This is the output of applying distortion correction to one of the test images:
 
 ![alt text][image2]
-
 #### 2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
 
 I have defined a few functions to apply different kinds of color and gradient thresholds to generate binary images in the 5th block of the "AdvLaneLine.ipynb" notebook. After some trial and error, I ended up using a combination of 'S' channel color (after converting the image from RGB to HLS) and gradient threshold in the 'x' direction to generate a binary image (6th code cell of the Ipython notebook). The choice of the channel to use for color thresholding and the type of gradient thresholding to be used was based on which combination best highlighted the lane lines. Here's an example of my output for this step:
 
 ![alt text][image3]
-
 #### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
 
 Perspective transform maps points from an image plane to a different plane of view. To help me visualize how I wanted points from my source image to look like in my destination image (top view), the code in the 7th code cell of the notebook marks source image points by blue dots, and the destination points by red crosses. I have hard-coded both of these such that the src image points are placed with some margin beyond the lane lines (so that they will work for all images taken from the center camera), and the destination points are spaced wide apart. Here's the visualization of these points on the test image:
 
 ![alt text][image4]
-
 The code for my perspective transform includes a function called `warpImg()`, which appears in the 8th code cell in the file "AdvLaneLine.ipynb".  The `warpImg()` function takes as inputs an image (`img`), as well as source (`src`) and destination (`dst`) points.  I chose to hardcode the source and destination points in the following manner (since all the images and video frames are of the same size, these hard-coded values worked for this project):
 
 ```python
@@ -90,7 +86,6 @@ This resulted in the following source and destination points:
 Here's a comparison of the images before and after perspective transform. The lines appear more or less parallel in the warped image.
 
 ![alt text][image5]
-
 #### 4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
 
 In the block title 'Function to detect and draw lane lines', I have taken the following steps to detect lane lines in the test images and fit a 2nd order polynomial curve to them:
@@ -102,7 +97,6 @@ In the block title 'Function to detect and draw lane lines', I have taken the fo
 This is how my test image looks after fitting a 2nd order polynomial:
 
 ![alt text][image6]
-
 #### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 
 I computed these in the code cell titled 'Calculate radius of curvature and position wrt center of image' in the notebook. To compute the radius of curvature in real world dimensions, I first found the polyfit coefficients using real world (x,y) coordinates by converting pixels to meters. For the offset, I first computed the offset of the lane center from the image center in pixels, and then converted this difference to meters.
@@ -112,7 +106,6 @@ I computed these in the code cell titled 'Calculate radius of curvature and posi
 I implemented this step in the code cell titled 'Project lane lines back to real world perspective'. For transforming the image back from the top view to the real world view, I use the inverse perspective transformation matrix 'Minv' that I computed by swapping the source and destination images in the warpImg() function. The lane boundaries are identified from the filled green color. Here is an example of my result on a test image:
 
 ![alt text][image7]
-
 ---
 
 ### Pipeline (video)
