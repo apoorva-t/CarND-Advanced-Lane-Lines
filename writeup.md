@@ -41,7 +41,6 @@ The code for this step is contained in the second code cell of the IPython noteb
 I start by preparing "object points", which will be the (x, y, z) coordinates of the chessboard corners in the world. Here I am assuming the chessboard is fixed on the (x, y) plane at z=0, such that the object points are the same for each calibration image.  Thus, `objp` is just a replicated array of coordinates, and `objpts` will be appended with a copy of it every time I successfully detect all chessboard corners in a test image.  `imgpts` will be appended with the (x, y) pixel position of each of the corners in the image plane with each successful chessboard detection.  
 
 I then used the output `objpts` and `imgpts` to compute the camera calibration and distortion coefficients using the `cv2.calibrateCamera()` function.  I applied this distortion correction to the chessboard image using the `cv2.undistort()` function and obtained this result: 
-
 ![alt text][image1]
 
 ### Pipeline (single images)
@@ -49,6 +48,7 @@ I then used the output `objpts` and `imgpts` to compute the camera calibration a
 #### 1. Provide an example of a distortion-corrected image.
 
 Now that we have the distortion coefficients and camera matrix in 'dist' and 'mtx', we will use these in the pipeline for both test images and frames in the video to correct for distortion. This is the output of applying distortion correction to one of the test images:
+
 ![alt text][image2]
 
 #### 2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
@@ -60,6 +60,7 @@ I have defined a few functions to apply different kinds of color and gradient th
 #### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
 
 Perspective transform maps points from an image plane to a different plane of view. To help me visualize how I wanted points from my source image to look like in my destination image (top view), the code in the 7th code cell of the notebook marks source image points by blue dots, and the destination points by red crosses. I have hard-coded both of these such that the src image points are placed with some margin beyond the lane lines (so that they will work for all images taken from the center camera), and the destination points are spaced wide apart. Here's the visualization of these points on the test image:
+
 ![alt text][image4]
 
 The code for my perspective transform includes a function called `warpImg()`, which appears in the 8th code cell in the file "AdvLaneLine.ipynb".  The `warpImg()` function takes as inputs an image (`img`), as well as source (`src`) and destination (`dst`) points.  I chose to hardcode the source and destination points in the following manner (since all the images and video frames are of the same size, these hard-coded values worked for this project):
